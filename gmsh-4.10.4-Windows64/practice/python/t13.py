@@ -13,7 +13,7 @@ def createGeometryAndMesh():
     print(path)
     # 実際に呼び出しているのはここ
     # ファイルのパスを記述している
-    gmsh.merge(os.path.join(path, os.pardir, "tutorials", "t13_data.stl"))
+    gmsh.merge(os.path.join(path,os.pardir, os.pardir, "tutorials", "t13_data.stl"))
 
 
 
@@ -33,9 +33,9 @@ def createGeometryAndMesh():
 
     curveAngle = 180
 
-    # gmsh.model.mesh.classifySurfaces(angle * math.pi / 180., includeBoundary, forceParametrizablePatches, curveAngle * math.pi / 180.)
+    gmsh.model.mesh.classifySurfaces(angle * math.pi / 180., includeBoundary, forceParametrizablePatches, curveAngle * math.pi / 180.)
 
-    # gmsh.model.mesh.createGeometry()
+    gmsh.model.mesh.createGeometry()
 
     gmsh.write("t13.msh")
 

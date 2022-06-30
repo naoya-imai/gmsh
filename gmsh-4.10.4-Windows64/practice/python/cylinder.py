@@ -23,11 +23,19 @@ def createGeometryAndMesh():
     angle = gmsh.onelab.getNumber('Parameters/Angle for surface detection')[0]
     print(f"angle is {angle}")
 
-    # forceParametrizablePatches = gmsh.onelab.getNumber(
-        # 'Parameters/Create surfaces guaranteed to be parametrizable')[0]
+    forceParametrizablePatches = gmsh.onelab.getNumber(
+        'Parameters/Create surfaces guaranteed to be parametrizable')[0]
+    print(f"forceParametrizablePatches is {forceParametrizablePatches}")
 
+    includeBoundary = True
 
-    gmsh.write("t13.msh")
+    curveAngle = 180
+  
+    gmsh.model.mesh.classifySurfaces(angle * math.pi / 180., includeBoundary, forceParametrizablePatches, curveAngle * math.pi / 180.)
+
+    gmsh.model.mesh.createGeometry()
+
+    gmsh.write("cylinder.msh")
     if '-nopopup' not in sys.argv:
         gmsh.fltk.run()
 
