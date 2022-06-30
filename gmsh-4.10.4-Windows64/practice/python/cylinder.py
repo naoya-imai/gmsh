@@ -14,7 +14,7 @@ def createGeometryAndMesh():
     # 実際に呼び出しているのはここ
     # ファイルのパスを記述している
     # gmsh.merge(os.path.join(path, os.pardir, "tutorials", "t13_data.stl"))
-    gmsh.merge(os.path.join(path, "cylinder.stl"))
+    gmsh.merge(os.path.join(path, os.pardir, "cylinder.stl"))
 
 
     # ます元の表面を鋭い幾何学的特徴に沿って分割することで、表面を色付けする
