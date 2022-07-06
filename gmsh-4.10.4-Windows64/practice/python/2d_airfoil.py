@@ -177,4 +177,4 @@ def genMesh(airfoilFile,structure=True):
     return(0)
 
 
-genMesh("test.txt")
+genMesh("NACA4412.dat")
