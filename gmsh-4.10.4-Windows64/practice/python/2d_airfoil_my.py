@@ -4,7 +4,7 @@ import gmsh
 import os
 import sys
 
-def genMesh(airfoilFile, structure=True):
+def genMesh(airfoilFile, structure=False):
     print("test")
 
     # read airfoil file
@@ -31,6 +31,7 @@ def genMesh(airfoilFile, structure=True):
     # initialize gmsh and add model
     gmsh.initialize()
     # デフォルトでは、物理グループが定義されている場合、Gmshは少なくとも1つの物理グループに属する要素のみを出力メッシュファイルにエクスポートすることに留意してください。Gmshがすべての要素を保存するように強制するには、以下のようにします。
+    # gmsh.option.setNumber("General.Terminal", 1)を加えると，gmshが実行されているときのログを画面に出力することができる．デバッグのときなどはエラーを見つけるのに役に立つ
     gmsh.option.setNumber("General.Terminal", 1)
     gmsh.model.add("airfoil")
 
@@ -62,6 +63,13 @@ def genMesh(airfoilFile, structure=True):
     gmsh.model.geo.addPoint(R,0.,0.,lc,5)
     gmsh.model.geo.addPoint(R,R*math.sin(math.pi/2+TE_angle_U),0.,lc,6)
 
+    # 円弧を追加
+    # gmsh.model.geo.addCircleArc(始点のタグ,原点のタグ,終点のタグ,Circleのタグ)
+    # 直線を追加
+    # gmsh.model.geo.addLine(始点のタグ,終点のタグ,Lineのタグ)
+    # スプラインを追加
+    # gmsh.model.geo.addSpline([点のタグのlist],Splineのタグ)
+
     # add Circle and Line
     # 外領域の定義
     gmsh.model.geo.addCircleArc(1, TE_pointIndex, 2, 1)
@@ -90,6 +98,19 @@ def genMesh(airfoilFile, structure=True):
     else:
         #add CurveLoop and PlenSurface
         gmsh.model.geo.addCurveLoop([1,2,3,4,5,6], 1)
+        gmsh.model.geo.addCurveLoop([11,12], 2)
+
+        # addPlaneSurfaceメソッドの閉曲線のlistは，[一番外側の閉曲線，くり抜く閉曲線1，くり抜く閉曲線，・・・]と指定する
+        gmsh.model.geo.addPlaneSurface([1,2],1)
+
+        #set BoundaryLayer field
+        gmsh.model.mesh.field.add("BoundaryLayer",1)
+        gmsh.model.mesh.field.setNumbers(1,"EdgesList",[11,12])
+        gmsh.model.mesh.field.setNumber(1,"Quads",1)
+        gmsh.model.mesh.field.setNumber(1,"hwall_n",1e-3)
+        gmsh.model.mesh.field.setNumber(1,"thickness",1e-2)
+        gmsh.model.mesh.field.setAsBoundaryLayer(1)
+
 
     # ここでやっとモデルが可視化出来る
     gmsh.model.geo.synchronize()
