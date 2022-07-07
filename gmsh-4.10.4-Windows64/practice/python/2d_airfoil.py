@@ -3,7 +3,7 @@ import math
 import gmsh
 import os
 
-def genMesh(airfoilFile,structure=True):
+def genMesh(airfoilFile,structure=False):
     print("test")
     
     #read airfoil file
