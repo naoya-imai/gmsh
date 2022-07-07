@@ -35,4 +35,7 @@ gmsh.model.mesh.generate(3)
 
 gmsh.write("boolean.msh")
 
+if '-nopopup' not in sys.argv:
+    gmsh.fltk.run()
+
 gmsh.finalize()

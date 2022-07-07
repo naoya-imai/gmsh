@@ -12,10 +12,16 @@ gmsh.model.mesh.createGeometry()
 
 gmsh.option.setNumber("Geometry.ExtrudeReturnLateralEntities", 0)
 
+white = (255, 255, 255)
+black = (0, 0, 0)
+
 
 # 2次元メッシュの可視化オプションをONにするコマンド
 gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
 gmsh.option.setNumber("General.MouseInvertZoom", 1)
+# gmsh.option.setColor("General.Background", 100, 100, 100)
+gmsh.option.setColor("General.Background", white[0], white[1], white[2])
+# gmsh.option.setColor("General.Text", 255, 200, 200)
 
 gmsh.model.geo.synchronize()
 gmsh.model.mesh.generate(3)
