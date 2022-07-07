@@ -24,7 +24,12 @@ gmsh.model.geo.synchronize()
 gmsh.model.addPhysicalGroup(1, [1, 2, 4], 5)
 gmsh.model.addPhysicalGroup(2, [1], name = "My surface")
 
+# メッシュを生成するコマンド
 gmsh.model.mesh.generate(2)
+
+# change some option
+gmsh.option.setColor("Geometry.Color.Points", 255, 165, 0)
+# gmsh.model.mesh.setVisibility(3, 1)
 
 gmsh.write("square_scatter.msh")
 

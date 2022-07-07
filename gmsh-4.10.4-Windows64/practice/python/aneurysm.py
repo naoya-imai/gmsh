@@ -13,7 +13,7 @@ gmsh.model.mesh.classifySurfaces(math.pi, True, True)
 gmsh.model.mesh.createGeometry()
 
 # make extrusions only return "top" surfaces and volumes, not lateral surfaces
-gmsh.option.setNumber("Geometry.ExtrudeReturnLateralEntities", 0)
+gmsh.option.setNumber('Geometry.ExtrudeReturnLateralEntities', 0)
 
 # extrude a boundary layer of 4 elements using mesh normals (thickness = 0.5)
 gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], [0.5], True)
@@ -34,8 +34,9 @@ bnd_curv = [c[1] for c in bnd_ent]
 
 # create plane surfaces filling the holes
 loops = gmsh.model.geo.addCurveLoops(bnd_curv)
-for l in loops:
-    top_surf.append(gmsh.model.geo.addPlaneSurface([1]))
+for i in loops:
+    # これ1じゃなくてl
+    top_surf.append(gmsh.model.geo.addPlaneSurface([i]))
 
 # create the inner volume
 gmsh.model.geo.addVolume([gmsh.model.geo.addSurfaceLoop(top_surf)])
