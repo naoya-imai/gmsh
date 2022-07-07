@@ -12,14 +12,15 @@ gmsh.model.mesh.createGeometry()
 
 gmsh.option.setNumber("Geometry.ExtrudeReturnLateralEntities", 0)
 
-# N = 10 # number of layers
-# r = 1.2 # ratio
-# d = [0.01] # thickness of first layer
-# for i in range(1, N):
-#     d.append(d[-1] - (d[0]) * r ** i )
-e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [10], [0.1], True)
+N = 5 # number of layers
+r = 1.2 # ratio
+d = [-0.5] # thickness of first layer
+for i in range(1, N):
+    d.append(d[-1] - (-d[0]) * r**i )
+print(d)
+gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [3], [0.1], True)
 # e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [1] * N, d, True)
-e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [2], [-0.1], True, True)
+e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [3], [-0.1], True, True)
 # top_ent行のコマンドを実行するために便宜的に厚さ0のboundaryを定義している
 
 top_ent = [s for s in e if s[0] == 2]
