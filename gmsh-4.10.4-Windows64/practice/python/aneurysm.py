@@ -16,7 +16,7 @@ gmsh.model.mesh.createGeometry()
 gmsh.option.setNumber('Geometry.ExtrudeReturnLateralEntities', 0)
 
 # extrude a boundary layer of 4 elements using mesh normals (thickness = 0.5)
-gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], [0.5], True)
+gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [7], [0.5], True)
 
 # extrude a second boundary layer in the opposite direction (note the `second ==
 # True' argument to distinguish it from the first one)
