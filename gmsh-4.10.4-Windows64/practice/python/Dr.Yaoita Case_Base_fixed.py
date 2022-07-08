@@ -25,7 +25,7 @@ e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], [0.5], T
 # extrude a second boundary layer in the opposite direction (note the `second ==
 # True' argument to distinguish it from the first one)
 # 2つ目の境界層を反対方向に押し出す (最初の境界層と区別するために `second == True' 引数に注意してください)
-# e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], [-0.5], True, True)
+e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], [-0.5], True, True)
 
 # get "top" surfaces created by extrusion
 # 押し出すことによって作られた「トップ」サーフェイスを得る
@@ -60,8 +60,11 @@ gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
 gmsh.option.setNumber("General.MouseInvertZoom", 1)
 gmsh.option.setNumber("Mesh.LineWidth", 2)
 
+
 gmsh.model.geo.synchronize()
 gmsh.model.mesh.generate(3)
+
+gmsh.write('Dr.Yaoita Case_Base_fixed.vtk')
 
 if "-nopopup" not in sys.argv:
     gmsh.fltk.run()

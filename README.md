@@ -38,9 +38,18 @@
 
   ```sh
   # powershell(windows)なら
-  python .\aneurysm.py > .\aneurysm.txt 2>&1
+  python .\aneurysm.py > .\aneurysm.txt 2>&1 
   # macなら
   # linuxなら
+  ```
+
+- メッシュの出力形式を変更できる
+
+  ```sh
+  # mshで出力
+  gmsh.write("cylinder_open.msh")
+  # vtkで出力
+  gmsh.write("cylinder_open.vtk")
   ```
 
 ## 解決したい問題
@@ -61,16 +70,21 @@
 
   - 中身が空洞の一枚の皮のような円筒を考えたとき法線を定義する表面は内側、外側どっちか？
     - なんか外側からさらに外側に向かって法線ベクトルが描画される  
+      多分普通にstlの法線を出力してるだけ  
       [法線を表示する方法](https://www.rccm.co.jp/icem/pukiwiki/index.php?2D%E3%83%A1%E3%83%83%E3%82%B7%E3%83%A5%E3%81%AE%E6%B3%95%E7%B7%9A%E6%96%B9%E5%90%91%E3%83%99%E3%82%AF%E3%83%88%E3%83%AB%E3%81%AE%E8%A1%A8%E7%A4%BA%28Gmsh%29)  
       <img src="./images/normal_vector.png" width="500" alt="法線画像">  
 
-- 境界層(boundary layer)の層ごとの厚さの指定は class list じゃダメで、class numpy.ndarray でないとダメらしい  
+- 境界層(boundary layer)の層ごとの厚さの変数の方は list じゃダメで、numpy.ndarray でないとダメらしい  
 そんなこともないらしい？  
 **nとdの型が一致していれば大丈夫っぽい**  
-**markdownのリスト内の改行は文末に半角空白2ついれればOK**  
 **それぞれのd[i]の厚さをi番目の層の厚さとしているのではなく、i番目の層を元々の基準線からどれくらいの距離に取るかを設定している模様**
 
 
   ```sh
   e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), n, -d, True)
   ```
+
+## markdownのtips
+- markdownのリスト内の改行は文末に半角空白2ついれればOK  
+  こうすればOK
+- **アスタリスク2個で挟めば強調だよ**

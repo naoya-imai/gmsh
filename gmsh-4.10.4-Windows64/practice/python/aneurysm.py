@@ -60,6 +60,8 @@ gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
 gmsh.model.geo.synchronize()
 gmsh.model.mesh.generate(3)
 
+gmsh.write('aneurysm.vtk')
+
 if "-nopopup" not in sys.argv:
     gmsh.fltk.run()
 

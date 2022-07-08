@@ -74,6 +74,9 @@ gmsh.option.setNumber("General.Axes", 3)
 gmsh.model.geo.synchronize()
 gmsh.model.mesh.generate(3)
 
+
+gmsh.write('cylinder_open.vtk')
+
 if "-nopopup" not in sys.argv:
     gmsh.fltk.run()
 
