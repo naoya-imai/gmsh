@@ -23,10 +23,27 @@ n = np.linspace(1, 1, N)
 # print(n)
 # d = np.logspace(-3, -1, N)
 d = np.geomspace(0.01, 0.1, N)
-# print(d)
+t = np.full(N, 0.02)
+for i in range(0, N):
+    t[i] = t[i] * r ** i
+print(t)
+for i in range(1, N):
+    t[i] += t[i - 1]
+print(t)
+# for i in range(0, N):
+#     print(t[i])
+# for i in range(0, N):
+    # print(d[i])
+for i in range(1, N):
+    d[i] = d[i] + d[i - 1]
+print(d)
 # print(type(d))
 # 法線が円筒の外側からさらに外側を向くように設定されるので、dにマイナスを付けている？
-e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), n, -d, True)
+
+# 重要
+# それぞれのd[i]の厚さをi番目の層の厚さとしているのではなく、i番目の層を元々の基準線からどれくらいの距離に取るかを設定している模様
+
+e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), n, -t, True)
 # print(type([4]))
 # print(type(d))
 # e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], -d, True)
@@ -50,7 +67,9 @@ gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
 # マウスのホイールをズームイン・ズームアウトを自然な向きに変えるコマンド
 gmsh.option.setNumber("General.MouseInvertZoom", 1)
 # メッシュの線を見やすくするために、線の太さを変えるコマンド
-gmsh.option.setNumber("Mesh.LineWidth", 5)
+gmsh.option.setNumber("Mesh.LineWidth", 4)
+# 目盛りのついたboxを表示
+gmsh.option.setNumber("General.Axes", 3)
 
 gmsh.model.geo.synchronize()
 gmsh.model.mesh.generate(3)

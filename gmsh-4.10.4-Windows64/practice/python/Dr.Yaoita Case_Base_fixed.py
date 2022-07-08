@@ -20,13 +20,12 @@ gmsh.option.setNumber('Geometry.ExtrudeReturnLateralEntities', 0)
 # extrude a boundary layer of 4 elements using mesh normals (thickness = 0.5)
 # メッシュ法線を用いて4つの要素からなる境界層を押し出す、厚さは0.5
 # print(type([0.5]))
-gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], [0.5], True)
+e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], [0.5], True)
 
 # extrude a second boundary layer in the opposite direction (note the `second ==
 # True' argument to distinguish it from the first one)
 # 2つ目の境界層を反対方向に押し出す (最初の境界層と区別するために `second == True' 引数に注意してください)
-e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], [-0.5],
-                                        True, True)
+# e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], [-0.5], True, True)
 
 # get "top" surfaces created by extrusion
 # 押し出すことによって作られた「トップ」サーフェイスを得る
@@ -54,7 +53,12 @@ gmsh.model.geo.synchronize()
 # use MeshAdapt for the resulting not-so-smooth parametrizations
 gmsh.option.setNumber('Mesh.Algorithm', 1)
 gmsh.option.setNumber('Mesh.MeshSizeFactor', 0.1)
+
+
+
 gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
+gmsh.option.setNumber("General.MouseInvertZoom", 1)
+gmsh.option.setNumber("Mesh.LineWidth", 2)
 
 gmsh.model.geo.synchronize()
 gmsh.model.mesh.generate(3)
