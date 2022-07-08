@@ -70,11 +70,17 @@ gmsh.option.setNumber("General.MouseInvertZoom", 1)
 gmsh.option.setNumber("Mesh.LineWidth", 4)
 # 目盛りのついたboxを表示
 gmsh.option.setNumber("General.Axes", 3)
+# メッシュの法線を表示
+gmsh.option.setNumber("Mesh.Normals", 30)
 
 gmsh.model.geo.synchronize()
+# gmsh.option.setNumber("Mesh.MeshSizeMin", 0.3)
+# gmsh.option.setNumber("Mesh.MeshSizeMax", 0.3)
 gmsh.model.mesh.generate(3)
-
-
+print("finish meshing")
+print("=============================")
+gmsh.model.mesh.optimize('Netgen', True)
+print("=============================")
 gmsh.write('cylinder_open.vtk')
 
 if "-nopopup" not in sys.argv:
