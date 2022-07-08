@@ -7,6 +7,14 @@
 
 [公式ドキュメント](http://gmsh.info/dev/doc/texinfo/gmsh.pdf)
 
+- python経由でgmshを開いてるっぽいので、gmshを直接ダウンロードしなくてよい？
+  - バージョンアップしたかったら以下のコマンドをたたけばいいっぽい  
+    こうすれば勝手にバージョンアップされたgmshを見に行く
+
+    ```sh
+    pip install --upgrade gmsh
+    ```
+
 ## tips
 
 - 下記のスクリプトを入れ込めば、設定で二次元のメッシュの可視化を毎回 ON にする操作をしなくて良くなる
@@ -19,6 +27,15 @@
 
   ```sh
   gmsh.option.setNumber("General.MouseInvertZoom", 1)
+  ```
+
+- 出力をファイルに残したいなら
+
+  ```sh
+  # powershell(windows)なら
+  python .\aneurysm.py > .\aneurysm.txt 2>&1
+  # macなら
+  # linuxなら
   ```
 
 ## 解決したい疑問

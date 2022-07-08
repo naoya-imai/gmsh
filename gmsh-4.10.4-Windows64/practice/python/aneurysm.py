@@ -55,12 +55,12 @@ gmsh.model.geo.synchronize()
 gmsh.option.setNumber('Mesh.Algorithm', 1)
 gmsh.option.setNumber('Mesh.MeshSizeFactor', 0.1)
 gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
-gmsh.option.setNumber("")
+# gmsh.option.setNumber("")
 
 gmsh.model.geo.synchronize()
 gmsh.model.mesh.generate(3)
 
-# if "-nopopup" not in sys.argv:
-#     gmsh.fltk.run()
+if "-nopopup" not in sys.argv:
+    gmsh.fltk.run()
 
 gmsh.finalize()
