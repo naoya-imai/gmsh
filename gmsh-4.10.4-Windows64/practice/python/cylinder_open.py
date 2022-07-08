@@ -23,6 +23,7 @@ n = np.linspace(1, 1, N)
 print(n)
 # d = np.logspace(-3, -1, N)
 d = np.geomspace(0.01, 0.1, N)
+print(d)
 print(type(d))
 e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), n, -d, True)
 
@@ -41,7 +42,10 @@ gmsh.model.geo.addVolume([gmsh.model.geo.addSurfaceLoop(top_surf)])
 
 # 2次元メッシュの可視化オプションをONにするコマンド
 gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
+# マウスのホイールをズームイン・ズームアウトを自然な向きに変えるコマンド
 gmsh.option.setNumber("General.MouseInvertZoom", 1)
+# メッシュの線を見やすくするために、線の太さを変えるコマンド
+gmsh.option.setNumber("Mesh.LineWidth", 1)
 
 gmsh.model.geo.synchronize()
 gmsh.model.mesh.generate(3)
