@@ -20,12 +20,17 @@ r = 1.2 # ratio
     # d.append(d[-1] - (-d[0]) * r**i )
 # print(type(d))
 n = np.linspace(1, 1, N)
-print(n)
+# print(n)
 # d = np.logspace(-3, -1, N)
 d = np.geomspace(0.01, 0.1, N)
-print(d)
-print(type(d))
+# print(d)
+# print(type(d))
+# 法線が円筒の外側からさらに外側を向くように設定されるので、dにマイナスを付けている？
 e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), n, -d, True)
+# print(type([4]))
+# print(type(d))
+# e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], -d, True)
+
 
 top_ent = [s for s in e if s[0] == 2]
 top_surf = [s[1] for s in top_ent]
@@ -45,7 +50,7 @@ gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
 # マウスのホイールをズームイン・ズームアウトを自然な向きに変えるコマンド
 gmsh.option.setNumber("General.MouseInvertZoom", 1)
 # メッシュの線を見やすくするために、線の太さを変えるコマンド
-gmsh.option.setNumber("Mesh.LineWidth", 1)
+gmsh.option.setNumber("Mesh.LineWidth", 5)
 
 gmsh.model.geo.synchronize()
 gmsh.model.mesh.generate(3)

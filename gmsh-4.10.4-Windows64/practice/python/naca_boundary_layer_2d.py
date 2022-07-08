@@ -83,6 +83,8 @@ if by_extrusion:
     d = [-1.7e-5] # thickness of first layer
     for i in range(1, N): d.append(d[-1] - (-d[0]) * r**i)
     print(d)
+    print(type(d))
+    print(type([1] * N))
     extbl = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(1), [1] * N, d, True)
 
     # create curve loop with "top" curves of the boundary layer

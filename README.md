@@ -36,7 +36,10 @@
       ![法線画像](./images/normal_vector.png)
     - [法線を表示する方法](https://www.rccm.co.jp/icem/pukiwiki/index.php?2D%E3%83%A1%E3%83%83%E3%82%B7%E3%83%A5%E3%81%AE%E6%B3%95%E7%B7%9A%E6%96%B9%E5%90%91%E3%83%99%E3%82%AF%E3%83%88%E3%83%AB%E3%81%AE%E8%A1%A8%E7%A4%BA%28Gmsh%29)
 
-- 境界層(boundary layer)の層ごとの厚さの指定は class list じゃダメで、class numpy.ndarray でないとダメらしい
+- 境界層(boundary layer)の層ごとの厚さの指定は class list じゃダメで、class numpy.ndarray でないとダメらしい  
+そんなこともないらしい？  
+**nとdの型が一致していれば大丈夫っぽい**  
+**markdownのリスト内の改行は文末に半角空白2ついれればOK**
 
   ```sh
   e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), n, -d, True)

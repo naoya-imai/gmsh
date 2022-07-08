@@ -18,7 +18,8 @@ gmsh.model.mesh.createGeometry()
 gmsh.option.setNumber('Geometry.ExtrudeReturnLateralEntities', 0)
 
 # extrude a boundary layer of 4 elements using mesh normals (thickness = 0.5)
-# メッシュ法線を用いて4つの要素からなる境界層を押し出す、圧だは0.5
+# メッシュ法線を用いて4つの要素からなる境界層を押し出す、厚さは0.5
+# print(type([0.5]))
 gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], [0.5], True)
 
 # extrude a second boundary layer in the opposite direction (note the `second ==
@@ -54,11 +55,12 @@ gmsh.model.geo.synchronize()
 gmsh.option.setNumber('Mesh.Algorithm', 1)
 gmsh.option.setNumber('Mesh.MeshSizeFactor', 0.1)
 gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
+gmsh.option.setNumber("")
 
 gmsh.model.geo.synchronize()
 gmsh.model.mesh.generate(3)
 
-if "-nopopup" not in sys.argv:
-    gmsh.fltk.run()
+# if "-nopopup" not in sys.argv:
+#     gmsh.fltk.run()
 
 gmsh.finalize()
