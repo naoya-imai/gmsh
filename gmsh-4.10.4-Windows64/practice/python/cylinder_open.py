@@ -7,7 +7,7 @@ import numpy as np
 gmsh.initialize(sys.argv)
 
 path = os.path.dirname(os.path.abspath(__file__))
-gmsh.merge(os.path.join(path, os.pardir, "cylinder_open.stl"))
+gmsh.merge(os.path.join(path, "cylinder_open.stl"))
 gmsh.model.mesh.classifySurfaces(math.pi, True, True)
 gmsh.model.mesh.createGeometry()
 
@@ -48,7 +48,6 @@ e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), n, -t, True)
 # print(type(d))
 # e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], -d, True)
 
-
 top_ent = [s for s in e if s[0] == 2]
 top_surf = [s[1] for s in top_ent]
 
@@ -62,6 +61,22 @@ for i in loops:
 
 gmsh.model.geo.addVolume([gmsh.model.geo.addSurfaceLoop(top_surf)])
 
+gmsh.model.geo.synchronize()
+
+# ここは完璧な手作業、ボトルネックがここになる
+# gmsh.model.addPhysicalGroupしてからsetPhysicalNameで名前をつける、これでワンセットなのでセミコロンを使って1行で書く
+gmsh.model.addPhysicalGroup(2,[2],1);gmsh.model.setPhysicalName(2,1,"wall")
+gmsh.model.addPhysicalGroup(2,[11,17],2);gmsh.model.setPhysicalName(2,2,"inlet")
+gmsh.model.addPhysicalGroup(2,[15,18],3);gmsh.model.setPhysicalName(2,3,"outlet")
+gmsh.model.addPhysicalGroup(3,[1,2],1);gmsh.model.setPhysicalName(3,1,"internal")
+
+
+# この一文が重要っぽい
+# 2次元メッシュのメッシュ作成アルゴリズムの選択
+gmsh.option.setNumber('Mesh.Algorithm', 1)
+# gmsh.option.setNumber('Mesh.MeshSizeFactor', 0.1)
+# gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
+
 # 2次元メッシュの可視化オプションをONにするコマンド
 gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
 # マウスのホイールをズームイン・ズームアウトを自然な向きに変えるコマンド
@@ -71,7 +86,7 @@ gmsh.option.setNumber("Mesh.LineWidth", 4)
 # 目盛りのついたboxを表示
 gmsh.option.setNumber("General.Axes", 3)
 # メッシュの法線を表示
-gmsh.option.setNumber("Mesh.Normals", 30)
+# gmsh.option.setNumber("Mesh.Normals", 30)
 
 gmsh.model.geo.synchronize()
 gmsh.option.setNumber("Mesh.MeshSizeMin", 0.2)
@@ -81,7 +96,8 @@ gmsh.model.mesh.generate(3)
 # print("=============================")
 # gmsh.model.mesh.optimize('Netgen', True)
 # print("=============================")
-gmsh.write('cylinder_open.vtk')
+gmsh.write('cylinder_open.msh')
+gmsh.write('cylinder_open.msh2')
 
 if "-nopopup" not in sys.argv:
     gmsh.fltk.run()

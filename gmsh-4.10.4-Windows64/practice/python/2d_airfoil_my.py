@@ -5,7 +5,7 @@ import os
 import sys
 
 def genMesh(airfoilFile, structure=False):
-    print("test")
+    # print("test")
 
     # read airfoil file
     # skiprows=1 1行目を飛ばす
@@ -17,11 +17,11 @@ def genMesh(airfoilFile, structure=False):
     if np.max(np.abs(ar[0] - ar[(ar.shape[0] - 1)])) < 1e-6:
         ar = ar[:-1]
 
-    print(ar.shape)
-    print(ar.shape[0])
-    print(ar.shape[1])
-    for i in range(ar.shape[0]):
-        print(f"{i} {ar[i][0]}")
+    # print(ar.shape)
+    # print(ar.shape[0])
+    # print(ar.shape[1])
+    # for i in range(ar.shape[0]):
+    #     print(f"{i} {ar[i][0]}")
 
     # calculate TE angle
     # 後縁 (trailing edge, T.E.)
@@ -39,7 +39,7 @@ def genMesh(airfoilFile, structure=False):
     TE_pointIndex = 1000
     # 前縁 (leading edge, L.E.)
     # argminはarの0次元の要素のおける最小値を記録するindexを返す
-    print(np.argmin(ar, axis=0)[0])
+    # print(np.argmin(ar, axis=0)[0])
     LE_pointIndex = TE_pointIndex + np.argmin(ar, axis=0)[0]
     MAX_pointIndex = TE_pointIndex + ar.shape[0] - 1
 
@@ -95,12 +95,24 @@ def genMesh(airfoilFile, structure=False):
     if structure:
         # add CurveLoop and PlainSurface
         gmsh.model.geo.addCurveLoop([-11,7,1,-8], 1)
+        gmsh.model.geo.addCurveLoop([8,2,-9,-12],2)
+        gmsh.model.geo.addCurveLoop([9,3,4,-10], 3)
+        gmsh.model.geo.addCurveLoop([10,5,6,-7], 4)
+
+        gmsh.model.geo.addPlaneSurface([1],1)
+        gmsh.model.geo.addPlaneSurface([2],2)
+        gmsh.model.geo.addPlaneSurface([3],3)
+        gmsh.model.geo.addPlaneSurface([4],4)
     else:
         #add CurveLoop and PlenSurface
+        # 外側の閉曲線
         gmsh.model.geo.addCurveLoop([1,2,3,4,5,6], 1)
+        # 内側の閉曲線
         gmsh.model.geo.addCurveLoop([11,12], 2)
 
         # addPlaneSurfaceメソッドの閉曲線のlistは，[一番外側の閉曲線，くり抜く閉曲線1，くり抜く閉曲線，・・・]と指定する
+        # 上のやつ意味わからんからたぶんこう
+        # addPlaneSurfaceメソッドの閉曲線のlistは，([一番外側の閉曲線，くり抜く閉曲線],定義する曲線の番号)と指定する
         gmsh.model.geo.addPlaneSurface([1,2],1)
 
         #set BoundaryLayer field
@@ -110,10 +122,31 @@ def genMesh(airfoilFile, structure=False):
         gmsh.model.mesh.field.setNumber(1,"hwall_n",1e-3)
         gmsh.model.mesh.field.setNumber(1,"thickness",1e-2)
         gmsh.model.mesh.field.setAsBoundaryLayer(1)
+    
+        #extrude
+        gmsh.model.geo.extrude([(2,1)],0.,0.,1.,[1],[1.],recombine=True)
+        
+        #add PhysicalGroup and set Name
+        # これまでに作ったsurfaceやvolumeをphysicalgroupに追加する
+        # gmsh.model.addPhysicalGroup(次元数,[タグのlist],PhysicalGroupのタグ)
+        # extrudeメソッドで新たに追加されたSurfaceやVolumeのタグは自動的に振られるので，現時点ではどのSurfaceに何番のタグが振られているのかわからない
+        gmsh.model.addPhysicalGroup(2,[1],1)    ;gmsh.model.setPhysicalName(2,1,"front")
+        gmsh.model.addPhysicalGroup(2,[54],2)   ;gmsh.model.setPhysicalName(2,2,"back")
+        gmsh.model.addPhysicalGroup(2,[25,29],3);gmsh.model.setPhysicalName(2,3,"inlet")
+        gmsh.model.addPhysicalGroup(2,[37,41],4);gmsh.model.setPhysicalName(2,4,"exit")
+        gmsh.model.addPhysicalGroup(2,[45],5)   ;gmsh.model.setPhysicalName(2,5,"top")
+        gmsh.model.addPhysicalGroup(2,[33],6)   ;gmsh.model.setPhysicalName(2,6,"bottom")
+        gmsh.model.addPhysicalGroup(2,[49,53],7);gmsh.model.setPhysicalName(2,7,"aerofoil")
+        gmsh.model.addPhysicalGroup(3,[1],8)    ;gmsh.model.setPhysicalName(3,8,"internal")
 
 
     # ここでやっとモデルが可視化出来る
     gmsh.model.geo.synchronize()
+    gmsh.model.mesh.generate(3)
+    # 2次元メッシュの可視化オプションをONにするコマンド
+    gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
+    # マウスのホイールをズームイン・ズームアウトを自然な向きに変えるコマンド
+    gmsh.option.setNumber("General.MouseInvertZoom", 1)
 
     gmsh.write("airfoil.msh")    
 

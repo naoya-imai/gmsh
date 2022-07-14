@@ -44,13 +44,20 @@
   ```
 
 - メッシュの出力形式を変更できる
+  - OpenFOAMのgmshToFoamを使用するためにはmsh2の形式で出力したものを使う必要がある
 
   ```sh
   # mshで出力
   gmsh.write("cylinder_open.msh")
+  # msh2で出力
+  gmsh.write("cylinder_open.msh2")
   # vtkで出力
   gmsh.write("cylinder_open.vtk")
   ```
+
+- 2d_airfoil.pyに関してはこのサイトを見てくださいv
+
+  - [参考にしたサイト](https://mtkbirdman.com/gmsh-v4-6-0-python-2dairfoil)
 
 ## 解決したい問題
 
