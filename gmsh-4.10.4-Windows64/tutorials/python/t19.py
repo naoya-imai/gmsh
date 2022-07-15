@@ -90,6 +90,7 @@ gmsh.option.setNumber("Mesh.MeshSizeMax", 0.3)
 
 gmsh.model.mesh.generate(3)
 gmsh.write("t19.msh")
+gmsh.write("t19.msh2")
 
 # Launch the GUI to see the results:
 if '-nopopup' not in sys.argv:

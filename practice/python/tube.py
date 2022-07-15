@@ -2,13 +2,13 @@ import gmsh
 import sys
 import numpy as np
 
-gmsh.initialize()
+gmsh.initialize(sys.argv)
 gmsh.model.add("Tube boundary layer")
 
 
 # 設定はまとめて最初に書いたほうが良いと思う
 gmsh.option.setNumber("Mesh.MeshSizeMax", 0.3)
-order2 = True
+order2 = False
 
 # surfaceとvolumeを見えるようにする設定
 gmsh.option.setNumber("Geometry.Surfaces", 1)
@@ -18,11 +18,12 @@ gmsh.option.setNumber("Mesh.SurfaceFaces", 1)
 # マウスのホイールをズームイン・ズームアウトを自然な向きに変えるコマンド
 gmsh.option.setNumber("General.MouseInvertZoom", 1)
 # メッシュの法線を表示
-gmsh.option.setNumber("Mesh.Normals", 20)
+# gmsh.option.setNumber("Mesh.Normals", 20)
 # メッシュの線を見やすくするために、線の太さを変えるコマンド
 gmsh.option.setNumber("Mesh.LineWidth", 4)
 # 目盛りのついたboxを表示
 gmsh.option.setNumber("General.Axes", 3)
+# gmsh.option.setNumber("")
 
 c1 = gmsh.model.occ.addCylinder(0, 0, 0, 10, 0, 0, 1)
 gmsh.model.occ.remove(gmsh.model.occ.getEntities(3))
@@ -45,20 +46,22 @@ bnd_curv = [c[1] for c in bnd_ent]
 
 # create plane surfaces filling the holes
 loops = gmsh.model.geo.addCurveLoops(bnd_curv)
-for l in loops:
-    top_surf.append(gmsh.model.geo.addPlaneSurface([l]))
+for i in loops:
+    top_surf.append(gmsh.model.geo.addPlaneSurface([i]))
 
 # create the inner volume
 gmsh.model.geo.addVolume([gmsh.model.geo.addSurfaceLoop(top_surf)])
 gmsh.model.geo.synchronize()
 
-# generate the mesh
-gmsh.model.mesh.generate(3)
-
 gmsh.model.addPhysicalGroup(2,[1],1);gmsh.model.setPhysicalName(2,1,"wall")
 gmsh.model.addPhysicalGroup(2,[20,27],2);gmsh.model.setPhysicalName(2,2,"inlet")
 gmsh.model.addPhysicalGroup(2,[12,26],3);gmsh.model.setPhysicalName(2,3,"outlet")
 gmsh.model.addPhysicalGroup(3,[1,2],1);gmsh.model.setPhysicalName(3,1,"internal")
+
+gmsh.model.geo.synchronize()
+# generate the mesh
+gmsh.option.setNumber('Mesh.Algorithm', 1)
+gmsh.model.mesh.generate(3)
 
 if order2:
     gmsh.model.mesh.setOrder(2)
