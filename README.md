@@ -61,9 +61,11 @@
 
   - 境界層の作り方
     - 基本的にはこの関数を用いて設定する
+
       ```sh  
       e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), n, -t, True)
       ```
+
       gmsh.model.getentities(2):2次元の形状要素に対して  
       n:何枚はるのか  
       t:どれくらいの厚さにするのか
@@ -73,7 +75,7 @@
       **nとdの型が一致していれば大丈夫っぽい**  
       **それぞれのd[i]の厚さをi番目の層の厚さとしているのではなく、i番目の層を元々の基準線からどれくらいの距離に取るかを設定している模様**
     - 成功例  
-      <img src="./images/layer.png" width="500" alt="成功例"> 
+      <img src="./images/layer_correct.png" width="500" alt="成功例"> 
     - 失敗例:これはtの配列またはlistを各層の厚さとして勘違いして作った
       <img src="./images/layer_error.png" width="500" alt="失敗例">  
 
@@ -98,6 +100,8 @@
   ```
 
 ## markdownのtips
+
 - markdownのリスト内の改行は文末に半角空白2ついれればOK  
   こうすればOK
+
 - **アスタリスク2個で挟めば強調だよ**

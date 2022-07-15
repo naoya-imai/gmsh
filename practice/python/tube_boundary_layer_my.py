@@ -10,7 +10,7 @@ gmsh.model.add("Tube boundary layer")
 # meshing constraints
 # メッシュ制約
 gmsh.option.setNumber("Mesh.MeshSizeMax", 0.1)
-order2 = False
+order2 = True
 
 # fuse 2 cylinders and only keep outside shell
 # 2つの円柱を融合し、外殻のみを維持する
