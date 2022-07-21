@@ -28,9 +28,9 @@ gmsh.model.geo.addPlaneSurface([1], 1)
 gmsh.model.geo.synchronize()
 
 gmsh.model.addPhysicalGroup(1, [1, 2, 4], 5)
-# gmsh.model.addPhysicalGroup(2, [1], name = "My surface")
+gmsh.model.addPhysicalGroup(2, [1], name = "My surface")
 
-# gmsh.model.mesh.generate(2)
+gmsh.model.mesh.generate(2)
 
 gmsh.write("t1.msh")
 

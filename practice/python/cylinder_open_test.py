@@ -16,7 +16,6 @@ gmsh.option.setNumber("Geometry.ExtrudeReturnLateralEntities", 0)
 N = 5 # number of layers
 r = 1.2 # ratio
 n = np.linspace(1, 1, N) # [1,1,1,1,1]
-# print(n)
 t = np.full(N, 0.02) # distance from the reference line
 for i in range(0, N):
     t[i] = t[i] * r ** i
@@ -33,10 +32,7 @@ e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), n, -t, True)
 # print(type(d))
 # e = gmsh.model.geo.extrudeBoundaryLayer(gmsh.model.getEntities(2), [4], -d, True)
 
-# python構文
-# list内包表記
 top_ent = [s for s in e if s[0] == 2]
-print(top_ent)
 top_surf = [s[1] for s in top_ent]
 
 gmsh.model.geo.synchronize()
@@ -50,14 +46,6 @@ for i in loops:
 gmsh.model.geo.addVolume([gmsh.model.geo.addSurfaceLoop(top_surf)])
 
 gmsh.model.geo.synchronize()
-
-# ここは完璧な手作業、ボトルネックがここになる
-# gmsh.model.addPhysicalGroupしてからsetPhysicalNameで名前をつける、これでワンセットなのでセミコロンを使って1行で書く
-gmsh.model.addPhysicalGroup(2,[2],1);gmsh.model.setPhysicalName(2,1,"wall")
-gmsh.model.addPhysicalGroup(2,[15,18],3);gmsh.model.setPhysicalName(2,3,"inlet")
-gmsh.model.addPhysicalGroup(2,[11,17],2);gmsh.model.setPhysicalName(2,2,"outlet")
-gmsh.model.addPhysicalGroup(3,[1,2],1);gmsh.model.setPhysicalName(3,1,"internal")
-# これを設定するとpythocalGroup(PhysicalName)で定義に含まれるメッシュやノードしかファイルに書き込まれない
 
 # 2次元メッシュのメッシュ作成アルゴリズムの選択
 gmsh.option.setNumber('Mesh.Algorithm', 1)
@@ -81,8 +69,8 @@ gmsh.model.mesh.generate(3)
 # print("=============================")
 # gmsh.model.mesh.optimize('Netgen', True)
 # print("=============================")
-gmsh.write('cylinder_open.msh')
-gmsh.write('cylinder_open.msh2')
+gmsh.write('cylinder_open_test.msh')
+gmsh.write('cylinder_open_test.msh2')
 
 if "-nopopup" not in sys.argv:
     gmsh.fltk.run()

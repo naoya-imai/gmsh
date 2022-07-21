@@ -57,6 +57,16 @@
     gmsh.write("cylinder_open.vtk")
     ```
 
+  - msh2形式について
+    - [msh2の説明サイト](http://www.manpagez.com/info/gmsh/gmsh-2.2.6/gmsh_63.php)に乗っている通り(公式ドキュメントにも乗っている)
+    - elementsについて  
+    ```sh
+    element_number, element_type, ?, physical_number, entities_number, node_list
+    (例)
+    1 2 2 1 2 56 138 137
+    要素番号1, 要素タイプ2(二次元の三角形), ?, どこのphysicalに所属するか1, どこのentitiesに所属するか2, 要素がどのノードによって作られるか(56と138と137)
+    ```
+
 - メッシュ作成に関するtips
 
   - 境界層の作り方
@@ -67,12 +77,13 @@
       ```
 
       gmsh.model.getentities(2):2次元の形状要素に対して  
-      n:何枚はるのか  
+      n:各層は何枚はるのか(n = np.linspace(1, 1, N) # [1,1,1,1,1]で指定するのがよい、N(=5)は層の数、これで各層が1枚で合計5枚になる、基本的にはこの設定でよい)  
       t:どれくらいの厚さにするのか
       True:レイヤー内のメッシュの再結合するか
       - 境界層(boundary layer)の層ごとの厚さの変数の方は list じゃダメで、numpy.ndarray でないとダメ?  
       そんなこともないらしい？  
       **nとdの型が一致していれば大丈夫っぽい**  
+      **nに関しては、それぞれの層において何枚の小層を作るか的な指定をすることになっている、n = np.linspace(1, 5, 5)にすると、1+2+3+4+5の合計15枚が張られることになる**
       **それぞれのd[i]の厚さをi番目の層の厚さとしているのではなく、i番目の層を元々の基準線からどれくらいの距離に取るかを設定している模様**
     - 成功例  
       <img src="./images/layer_correct.png" width="500" alt="成功例"> 
